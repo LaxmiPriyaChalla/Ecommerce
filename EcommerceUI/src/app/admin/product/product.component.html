@@ -1,0 +1,54 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="danger">
+    <nb-card-header>
+        <div class="row col-12">
+            <div class="offset-10">
+                <button nbButton status="primary" (click)="openWindow('Add Product')">Add Product</button>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="productList" (custom)="customEvent($event)"></ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #formTemplate>
+    <div class="row">
+        <form [formGroup]="productForm">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" class="form-control" nbInput formControlName="name"
+                    [status]="(productForm.controls.name.invalid && (productForm.controls.name.touched || submit) ? 'danger' : 'basic')">
+                <div class="text-danger"
+                    *ngIf="productForm.controls.name.errors?.required && (productForm.controls.name.touched || submit)">
+                    Name is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea class="form-control" nbInput formControlName="description"
+                    [status]="productForm.controls.description.invalid && (productForm.controls.description.touched || submit)? 'danger':'basic'"></textarea>
+                <div class="text-danger"
+                    *ngIf="productForm.controls.description.errors?.required && (productForm.controls.description.touched || submit)">
+                    Description is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Price:</label>
+                <input type="text" class="form-control" nbInput formControlName="price"
+                    [status]="productForm.controls.price.invalid && (productForm.controls.price.touched || submit) ? 'danger':'basic'">
+                <div class="text-danger"
+                    *ngIf="productForm.controls.price.invalid && (productForm.controls.price.touched || submit)">
+                    <div *ngIf="productForm.controls.price.errors?.required">
+                        Price is required.
+                    </div>
+                    <div *ngIf="productForm.controls.price.errors?.pattern">
+                        Please Enter valid Price.
+                    </div>
+                </div>
+            </div>
+
+            <button nbButton status="primary" (click)="save()">Save</button>
+
+        </form>
+    </div>
+</ng-template>
